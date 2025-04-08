@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IDOMDS</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__logo">
+        <img src="./assets/logo_header.svg" alt="Logo" />
+        <p class="header__logo-text">IDOMODS&lt;/&gt;</p>
+      </div>
+
+      <nav class="header__menu">
+        <ul class="header__menu-list">
+          <li data-href="home" class="menu__item active">Home</li>
+          <li data-href="featured-products" class="menu__item">Feature products</li>
+          <li data-href="product-listing" class="menu__item">Product Listing</li>
+        </ul>
+      </nav>
+      
+      <div class="header__profile">
+        <img src="./assets/avatar.svg" alt="avatar" />
+        <p>FRONTEND DEVELOPER</p>
+      </div>
+
+      <div class="header__menu-toggle">
+        <span class="header__menu-icon">
+          <img src="./assets/hamburger.svg" alt="" />
+        </span>
+        <span class="header__menu-text">MENU</span>
+      </div>
+    </header>
+
+
+    <div class="overlay"></div>
+    <div class="mobile-menu">
+      <div class="mobile-menu__content">
+        <div class="mobile-menu__header">
+          <div class="mobile-menu-logo">
+            <img src="./assets/logo.svg" alt="Logo" />
+          </div>
+          <div class="mobile-menu-close">
+            <img src="./assets/close.svg" alt="" />
+            <button class="close-btn">Close</button>
+          </div>
+        </div>
+        <nav class="mobile-menu__nav">
+          <ul class="mobile-menu__list">
+            <li data-href="home" class="mobile-menu__item active">Home</li>
+            <li data-href="featured-products" class="mobile-menu__item">Feature products</li>
+            <li data-href="product-listing" class="mobile-menu__item">Product Listing</li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- hero -->
+    <section id="home" class="hero">
+      <div class="hero__content">
+        <!-- lepiej byłoby użyć h1 - według semantycznego html'a i zasad SEO -->
+        <div class="hero__content__logo">
+          <img src="./assets/logo_hero.svg" alt="Logo" />
+        </div>
+        <div class="hero__content__image">
+          
+        </div>
+      </div>
+    </section>  
+    <!-- Featured Products -->
+    <section id="featured-products" class="featured-products-section">
+      <div class="featured-products">
+        <div class="featured-products__text">
+          <p>Featured Products</p>
+          <h2>Browse featured</h2>
+        </div>
+
+        <div class="slider-container">
+          <button class="slider-btn prev">
+            <img src="./assets/icon_slider.svg" alt="" />
+          </button>
+          <div class="slider-track" id="slider-track"></div>
+          <button class="slider-btn next">
+            <img src="./assets/icon_slider.svg" alt="" />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="product-listing" class="product-section">
+      <div class="product-section__content">
+        <label for="products-per-page">Number of Products per page</label>
+        <div class="custom-select">
+          <button class="select-button">
+            <span class="selected-value">6</span>
+            <img src="./assets/select_arrow.svg" alt="arrow" />
+          </button>
+          <ul class="select-dropdown hidden">
+            <li>8</li>
+            <li>10</li>
+            <li>14</li>
+            <li>24</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Grid Container dla produktów -->
+      <div class="product-section__grid" id="productGrid">
+        <div id="banner" class="banner">
+          <div class="banner__content">
+            <div class="banner__content__text">
+              <p>FORMA'SINT.</p>
+              <h2>You'll look and feel like the champion.</h2>
+            </div>
+            <div class="banner__content__cta">
+              <button>CHECK THIS OUT 
+              <img src="./assets/arrow_cta.svg" alt="arrow" />
+            </button>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Tutaj będą produkty -->
+      </div>
+</section>
+
+<div id="product-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-button">&times;</span>
+    <img id="modal-image" src="" alt="Product Image" />
+    <div class="modal-product-id"></div>
+
+  </div>
+</div>
+    <script src="script.js"></script>
+  </body>
+</html>

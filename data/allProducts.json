@@ -1,0 +1,86 @@
+[
+  {
+    "title": "Dark blue alpine climbing jacket",
+    "price": "€300,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "01"
+  },
+  {
+    "title": "Red mountain jacket",
+    "price": "€280,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "02"
+  },
+  {
+    "title": "Winter adventure jacket",
+    "price": "€320,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "03"
+  },
+  {
+    "title": "Mountain hiking boots",
+    "price": "€150,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "04"
+  },
+  {
+    "title": "Adventure backpack",
+    "price": "€90,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "05"
+  },
+  {
+    "title": "Waterproof gloves",
+    "price": "€40,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "06"
+  },
+  {
+    "title": "Thermal socks",
+    "price": "€20,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "07"
+  },
+  {
+    "title": "Climbing helmet",
+    "price": "€100,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "08"
+  },
+  {
+    "title": "Camping tent",
+    "price": "€350,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "09"
+  },
+  {
+    "title": "Sleeping bag",
+    "price": "€80,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "10"
+  },
+  {
+    "title": "Thermal jacket",
+    "price": "€250,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "11"
+  },
+  {
+    "title": "Hiking water bottle",
+    "price": "€15,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "12"
+  },
+  {
+    "title": "Mountain map",
+    "price": "€10,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "13"
+  },
+  {
+    "title": "Climbing rope",
+    "price": "€120,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "id": "14"
+  }
+]

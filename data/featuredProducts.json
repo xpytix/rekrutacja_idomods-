@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Dark blue alpine climbing jacket",
+    "price": "€300,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "label": "BESTSELLER"
+  },
+  {
+    "title": "Red mountain jacket",
+    "price": "€280,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "label": "LIMITED EDITION"
+  },
+  {
+    "title": "Winter adventure jacket",
+    "price": "€320,00 EUR",
+    "image": "/assets/product_photo_01.png",
+    "label": ""
+  }
+]
