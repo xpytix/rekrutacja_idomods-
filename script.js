@@ -34,18 +34,16 @@ menuMobileLinks.forEach((link) => {
         behavior: "smooth",
       });
     }
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
 
     menuMobileLinks.forEach((item) => item.classList.remove("active"));
-    link.classList.add("active"); 
+    link.classList.add("active");
 
     // Po kliknięciu w link, zamykamy menu
     mobileMenu.classList.remove("active");
     overlay.classList.remove("active");
   });
-
 });
-
 
 menuLinks.forEach((link) => {
   link.addEventListener("click", function (event) {
@@ -53,7 +51,7 @@ menuLinks.forEach((link) => {
     console.log(link);
     const targetId = link.getAttribute("data-href");
     const targetSection = document.getElementById(targetId);
-    
+
     if (targetSection) {
       const offset = window.innerHeight * 0.1;
 
@@ -64,11 +62,9 @@ menuLinks.forEach((link) => {
     }
 
     menuLinks.forEach((item) => item.classList.remove("active"));
-    link.classList.add("active"); 
+    link.classList.add("active");
   });
-
 });
-
 
 // ------------------------------ SLIDER FUNCTIONALITY ------------------------------
 const sliderTrack = document.getElementById("slider-track");
@@ -76,23 +72,23 @@ const nextBtn = document.querySelector(".slider-btn.next");
 const prevBtn = document.querySelector(".slider-btn.prev");
 
 let featuredProducts = [];
-let slideWidth = 320; 
-let productsDuplicated = []; 
+let slideWidth = 320;
+let productsDuplicated = [];
 
 // Fetch i render
 fetch("data/featuredProducts.json")
-  .then(res => res.json())
-  .then(data => {
+  .then((res) => res.json())
+  .then((data) => {
     featuredProducts = data;
-    productsDuplicated = [...data, ...data]; // Dublowanie tablicy 
+    productsDuplicated = [...data, ...data]; // Dublowanie tablicy
     renderSlides();
-    updateButtons(); 
+    updateButtons();
   });
 
 function renderSlides() {
   sliderTrack.innerHTML = "";
 
-  productsDuplicated.forEach(product => {
+  productsDuplicated.forEach((product) => {
     const card = document.createElement("div");
     card.className = "product-card";
 
@@ -115,7 +111,10 @@ function renderSlides() {
 }
 
 sliderTrack.addEventListener("scroll", () => {
-  if (sliderTrack.scrollLeft + sliderTrack.clientWidth >= sliderTrack.scrollWidth - 10) {
+  if (
+    sliderTrack.scrollLeft + sliderTrack.clientWidth >=
+    sliderTrack.scrollWidth - 10
+  ) {
     addMoreProducts();
   }
 
@@ -124,9 +123,8 @@ sliderTrack.addEventListener("scroll", () => {
 
 function addMoreProducts() {
   productsDuplicated.push(...featuredProducts); // Można tu dodać np. dane z API
-  renderSlides(); 
+  renderSlides();
 }
-
 
 nextBtn.addEventListener("click", () => {
   sliderTrack.scrollBy({ left: slideWidth, behavior: "smooth" });
@@ -152,53 +150,125 @@ function updateButtons() {
     nextBtn.style.display = "block";
   }
 }
-
-
-// ------------------------------ PRODUCTS SECTION ------------------------------
-
+// ------------------------------ Products  ------------------------------
 const productSelect = document.getElementById("products-per-page");
 const productGrid = document.getElementById("productGrid");
 
-// Funkcja do załadowania produktów z pliku JSON
-function loadProducts() {
-  fetch("data/allProducts.json")
-    .then((response) => response.json())
-    .then((data) => {
-      const productsPerPage = parseInt(selectedValue.textContent);
-      renderProducts(data, productsPerPage);
-    })
-    .catch((error) => console.error("Błąd ładowania danych: ", error));
+let currentPage = 1;
+let productsPerPage = parseInt(document.querySelector(".selected-value").textContent) || 14;
+let isLoading = false;
+
+// ------------------------------ LOAD PRODUCTS ------------------------------
+async function loadProducts(page = currentPage, pageSize = productsPerPage) {
+  if (isLoading) return;
+
+  isLoading = true;
+  try {
+    // Pobranie danych z API
+    const response = await fetch(
+      `https://brandstestowy.smallhost.pl/api/random?pageNumber=${page}&pageSize=${pageSize}`
+    );
+
+    const data = await response.json();
+
+    // Sprawdzenie, czy odpowiedź zawiera dane produktów
+    if (data && Array.isArray(data.data)) {
+      renderProducts(data.data);
+      currentPage++;
+    } else {
+      console.error("Nieprawidłowy format danych:", data);
+    }
+
+  } catch (error) {
+    console.error("Błąd ładowania danych: ", error);
+  } finally {
+    isLoading = false;
+  }
 }
 
-// Funkcja do renderowania produktów
-function renderProducts(products, productsPerPage) {
-  const oldProducts = productGrid.querySelectorAll(".product-grid-card");
-  oldProducts.forEach((oldProduct) => oldProduct.remove());
-
-  const productsToDisplay = products.slice(0, productsPerPage);
-
-  productsToDisplay.forEach((product) => {
+// ------------------------------ RENDER PRODUCTS ------------------------------
+function renderProducts(products) {
+  products.forEach((product) => {
+    // Tworzenie karty produktu
     const productCard = document.createElement("div");
     productCard.className = "product-grid-card";
 
+    // Wstawianie danych do karty produktu
     productCard.innerHTML = `
       <img class="grid-product-image" src="${product.image}" alt="${product.title}" />
-      <div class="grid-product-id">ID:${product.id}</div>
+      <div class="grid-product-id">ID: ${product.id}</div>
       <div hidden class="grid-product-title">${product.title}</div>
       <div hidden class="grid-product-price">${product.price}</div>
     `;
 
-    // Dodanie eventu kliknięcia na obrazek
+    // Dodanie eventu do kliknięcia w obrazek
     const image = productCard.querySelector(".grid-product-image");
     image.addEventListener("click", () => {
       openModal(product);
     });
 
+    // Dodanie karty produktu do gridu
     productGrid.appendChild(productCard);
   });
 }
 
-// Wyświetlenie produktów
+// ------------------------------ CUSTOM SELECT ------------------------------
+const customSelect = document.querySelector(".custom-select");
+const selectButton = customSelect.querySelector(".select-button");
+const selectedValue = customSelect.querySelector(".selected-value");
+const dropdown = customSelect.querySelector(".select-dropdown");
+
+selectButton.addEventListener("click", () => {
+  customSelect.classList.toggle("active");
+  dropdown.classList.toggle("hidden");
+});
+
+dropdown.addEventListener("click", (e) => {
+  if (e.target.tagName.toLowerCase() === "li") {
+    const newSelected = e.target.textContent;
+    const oldSelected = selectedValue.textContent;
+
+    selectedValue.textContent = newSelected;
+    e.target.textContent = oldSelected;
+
+    const items = [...dropdown.querySelectorAll("li")]
+      .map((li) => parseInt(li.textContent))
+      .sort((a, b) => a - b);
+
+    dropdown.innerHTML = items.map((val) => `<li>${val}</li>`).join("");
+
+    dropdown.classList.add("hidden");
+    customSelect.classList.remove("active");
+
+    // Restart produktow po zmianie liczby produktów na stronę
+    productsPerPage = parseInt(newSelected);
+    currentPage = 1;
+    const oldProducts = productGrid.querySelectorAll(".product-grid-card");
+    oldProducts.forEach((el) => el.remove());
+    loadProducts();
+  }
+});
+
+document.addEventListener("click", (e) => {
+  if (!customSelect.contains(e.target)) {
+    dropdown.classList.add("hidden");
+    customSelect.classList.remove("active");
+  }
+});
+
+// ------------------------------ INFINITE SCROLL ------------------------------
+function checkScroll() {
+  const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
+
+  if (bottom && !isLoading) {
+    loadProducts();
+  }
+}
+
+// Nasłuchuj przewijania
+window.addEventListener("scroll", checkScroll);
+
+// ------------------------------ START ------------------------------
 loadProducts();
 
 // ------------------------------ MODAL ------------------------------
@@ -224,46 +294,3 @@ document.getElementById("product-modal").addEventListener("click", (e) => {
     document.body.style.overflow = "auto";
   }
 });
-
-// ------------------------------ CUSTOM SELECT ------------------------------
-
-const customSelect = document.querySelector(".custom-select");
-const selectButton = customSelect.querySelector(".select-button");
-const selectedValue = customSelect.querySelector(".selected-value");
-const dropdown = customSelect.querySelector(".select-dropdown");
-
-selectButton.addEventListener("click", () => {
-  customSelect.classList.toggle("active");
-  dropdown.classList.toggle("hidden");
-});
-
-dropdown.addEventListener("click", (e) => {
-  if (e.target.tagName.toLowerCase() === "li") {
-    const newSelected = e.target.textContent;
-    const oldSelected = selectedValue.textContent;
-
-    selectedValue.textContent = newSelected;
-
-    e.target.textContent = oldSelected;
-
-    const items = [...dropdown.querySelectorAll("li")]
-      .map((li) => parseInt(li.textContent))
-      .sort((a, b) => a - b);
-
-    dropdown.innerHTML = items.map((val) => `<li>${val}</li>`).join("");
-
-    dropdown.classList.add("hidden");
-    customSelect.classList.remove("active");
-
-    loadProducts();
-  }
-});
-
-document.addEventListener("click", (e) => {
-  if (!customSelect.contains(e.target)) {
-    dropdown.classList.add("hidden");
-    customSelect.classList.remove("active");
-  }
-});
-
-
