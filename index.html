@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>IDOMDS</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css"
+    />
   </head>
   <body>
     <header class="header">
@@ -16,11 +20,15 @@
       <nav class="header__menu">
         <ul class="header__menu-list">
           <li data-href="home" class="menu__item active">Home</li>
-          <li data-href="featured-products" class="menu__item">Feature products</li>
-          <li data-href="product-listing" class="menu__item">Product Listing</li>
+          <li data-href="featured-products" class="menu__item">
+            Feature products
+          </li>
+          <li data-href="product-listing" class="menu__item">
+            Product Listing
+          </li>
         </ul>
       </nav>
-      
+
       <div class="header__profile">
         <img src="./assets/avatar.svg" alt="avatar" />
         <p>FRONTEND DEVELOPER</p>
@@ -33,7 +41,6 @@
         <span class="header__menu-text">MENU</span>
       </div>
     </header>
-
 
     <div class="overlay"></div>
     <div class="mobile-menu">
@@ -50,8 +57,12 @@
         <nav class="mobile-menu__nav">
           <ul class="mobile-menu__list">
             <li data-href="home" class="mobile-menu__item active">Home</li>
-            <li data-href="featured-products" class="mobile-menu__item">Feature products</li>
-            <li data-href="product-listing" class="mobile-menu__item">Product Listing</li>
+            <li data-href="featured-products" class="mobile-menu__item">
+              Feature products
+            </li>
+            <li data-href="product-listing" class="mobile-menu__item">
+              Product Listing
+            </li>
           </ul>
         </nav>
       </div>
@@ -63,12 +74,11 @@
         <!-- lepiej byłoby użyć h1 - według semantycznego html'a i zasad SEO -->
         <div class="hero__content__logo">
           <img src="./assets/logo_hero.svg" alt="Logo" />
+          <h1> Forma"Sint</h1>
         </div>
-        <div class="hero__content__image">
-          
-        </div>
+        <div class="hero__content__image"></div>
       </div>
-    </section>  
+    </section>
     <!-- Featured Products -->
     <section id="featured-products" class="featured-products-section">
       <div class="featured-products">
@@ -77,14 +87,20 @@
           <h2>Browse featured</h2>
         </div>
 
-        <div class="slider-container">
-          <button class="slider-btn prev">
-            <img src="./assets/icon_slider.svg" alt="" />
-          </button>
-          <div class="slider-track" id="slider-track"></div>
-          <button class="slider-btn next">
-            <img src="./assets/icon_slider.svg" alt="" />
-          </button>
+        <div class="featured-swiper-wrapper">
+          <div class="swiper featured-swiper">
+            <div class="swiper-wrapper" id="slider-track">
+              <!-- slajdy -->
+            </div>
+            <!-- Scrollbar -->
+            <div class="swiper-scrollbar"></div>
+            <div class="swiper-button-prev">
+              <img src="./assets/icon_slider.svg" alt="prev" />
+            </div>
+            <div class="swiper-button-next">
+              <img src="./assets/icon_slider.svg" alt="next" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -114,25 +130,28 @@
               <h2>You'll look and feel like the champion.</h2>
             </div>
             <div class="banner__content__cta">
-              <button>CHECK THIS OUT 
-              <img src="./assets/arrow_cta.svg" alt="arrow" />
-            </button>
+              <button>
+                CHECK THIS OUT
+                <img src="./assets/arrow_cta.svg" alt="arrow" />
+              </button>
             </div>
           </div>
         </div>
-      
+
         <!-- Tutaj będą produkty -->
       </div>
-</section>
+    </section>
 
-<div id="product-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close-button">&times;</span>
-    <img id="modal-image" src="" alt="Product Image" />
-    <div class="modal-product-id"></div>
-
-  </div>
-</div>
-    <script src="script.js"></script>
+    <div id="product-modal" class="modal hidden">
+      <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <img id="modal-image" src="" alt="Product Image" />
+        <div class="modal-product-id"></div>
+      </div>
+    </div>
+    <script type="module" src="script.js"></script>
+    <script type="module">
+      import "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.mjs";
+    </script>
   </body>
 </html>

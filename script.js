@@ -66,13 +66,18 @@ menuLinks.forEach((link) => {
   });
 });
 
-// ------------------------------ SLIDER FUNCTIONALITY ------------------------------
-const sliderTrack = document.getElementById("slider-track");
-const nextBtn = document.querySelector(".slider-btn.next");
-const prevBtn = document.querySelector(".slider-btn.prev");
+overlay.addEventListener("click", (e) => {
+  overlay.classList.remove("active");
+  mobileMenu.classList.remove("active");
+  document.body.style.overflow = "auto";
+});
 
+// ------------------------------ SLIDER FUNCTIONALITY ------------------------------
+import Swiper from "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.mjs";
+
+const sliderTrack = document.querySelector("#slider-track");
+const prevBtn = document.querySelector(".swiper-button-prev");
 let featuredProducts = [];
-let slideWidth = 320;
 let productsDuplicated = [];
 
 // Fetch i render
@@ -82,13 +87,16 @@ fetch("data/featuredProducts.json")
     featuredProducts = data;
     productsDuplicated = [...data, ...data]; // Dublowanie tablicy
     renderSlides();
-    updateButtons();
+    initSwiper(); 
   });
 
 function renderSlides() {
   sliderTrack.innerHTML = "";
 
   productsDuplicated.forEach((product) => {
+    const slide = document.createElement("div");
+    slide.className = "swiper-slide"; 
+
     const card = document.createElement("div");
     card.className = "product-card";
 
@@ -106,56 +114,70 @@ function renderSlides() {
       <div class="product-title">${product.title}</div>
       <div class="product-price">${product.price}</div>
     `;
-    sliderTrack.appendChild(card);
+
+    slide.appendChild(card);
+    sliderTrack.appendChild(slide);
   });
 }
 
-sliderTrack.addEventListener("scroll", () => {
-  if (
-    sliderTrack.scrollLeft + sliderTrack.clientWidth >=
-    sliderTrack.scrollWidth - 10
-  ) {
-    addMoreProducts();
-  }
+let swiper;
 
-  updateButtons();
-});
-
-function addMoreProducts() {
-  productsDuplicated.push(...featuredProducts); // Można tu dodać np. dane z API
-  renderSlides();
+function initSwiper() {
+  swiper = new Swiper(".featured-swiper", {
+    slidesPerView: "auto", 
+    spaceBetween: 16, 
+    loop: true, 
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    scrollbar: {
+      el: ".swiper-scrollbar",
+      draggable: true,
+      snapOnRelease: false,
+      hide: false,
+    },
+    breakpoints: {
+      320: {
+        slidesPerView: 1, 
+        spaceBetween: 8, 
+      },
+      576: {
+        slidesPerView: 2, 
+        spaceBetween: 8, 
+      },
+      768: {
+        slidesPerView: 3, 
+        spaceBetween: 16,
+      },
+      1024: {
+        slidesPerView: 4, 
+        spaceBetween: 20,
+      },
+    },
+    on: {
+      init() {
+        // 1) na starcie chowamy prev
+        prevBtn.hidden = true;
+      },
+      // 2) po każdej interakcji (klik next lub swipe)
+      slideNextTransitionStart() {
+        prevBtn.hidden = false;
+      },
+      touchStart() {
+        prevBtn.hidden = false;
+      }
+    },
+  });
 }
 
-nextBtn.addEventListener("click", () => {
-  sliderTrack.scrollBy({ left: slideWidth, behavior: "smooth" });
-});
-
-prevBtn.addEventListener("click", () => {
-  sliderTrack.scrollBy({ left: -slideWidth, behavior: "smooth" });
-});
-
-function updateButtons() {
-  const maxScrollLeft = sliderTrack.scrollWidth - sliderTrack.clientWidth;
-  const currentScroll = sliderTrack.scrollLeft;
-
-  if (currentScroll <= 0) {
-    prevBtn.style.display = "none";
-  } else {
-    prevBtn.style.display = "block";
-  }
-
-  if (currentScroll >= maxScrollLeft - 5) {
-    nextBtn.style.display = "none";
-  } else {
-    nextBtn.style.display = "block";
-  }
-}
 // ------------------------------ Products  ------------------------------
 const productSelect = document.getElementById("products-per-page");
 const productGrid = document.getElementById("productGrid");
 
 let currentPage = 1;
-let productsPerPage = parseInt(document.querySelector(".selected-value").textContent) || 14;
+let productsPerPage =
+  parseInt(document.querySelector(".selected-value").textContent) || 14;
 let isLoading = false;
 
 // ------------------------------ LOAD PRODUCTS ------------------------------
@@ -166,7 +188,7 @@ async function loadProducts(page = currentPage, pageSize = productsPerPage) {
   try {
     // Pobranie danych z API
     const response = await fetch(
-      `https://brandstestowy.smallhost.pl/api/random?pageNumber=${page}&pageSize=${pageSize}`
+      `https://brandstestowy.smallhost.pl/api/random?pageNumber=${page}&pageSize=${pageSize}`,
     );
 
     const data = await response.json();
@@ -178,7 +200,6 @@ async function loadProducts(page = currentPage, pageSize = productsPerPage) {
     } else {
       console.error("Nieprawidłowy format danych:", data);
     }
-
   } catch (error) {
     console.error("Błąd ładowania danych: ", error);
   } finally {
@@ -202,8 +223,8 @@ function renderProducts(products) {
     `;
 
     // Dodanie eventu do kliknięcia w obrazek
-    const image = productCard.querySelector(".grid-product-image");
-    image.addEventListener("click", () => {
+
+    productCard.addEventListener("click", () => {
       openModal(product);
     });
 
@@ -258,7 +279,9 @@ document.addEventListener("click", (e) => {
 
 // ------------------------------ INFINITE SCROLL ------------------------------
 function checkScroll() {
-  const bottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight;
+  const bottom =
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight;
 
   if (bottom && !isLoading) {
     loadProducts();
